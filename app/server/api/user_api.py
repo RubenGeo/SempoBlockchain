@@ -136,56 +136,55 @@ class UserAPI(MethodView):
 
         return make_response(jsonify(response_object)), response_code
 
+    @requires_auth(allowed_roles={'ADMIN': 'subadmin'})
+    def put(self, user_id):
+        put_data = request.get_json()
 
-@requires_auth(allowed_roles={'ADMIN': 'subadmin'})
-def put(self, user_id):
-    put_data = request.get_json()
+        first_name = put_data.get('first_name')
+        last_name = put_data.get('last_name')
 
-    first_name = put_data.get('first_name')
-    last_name = put_data.get('last_name')
+        email = put_data.get('email')
+        phone = put_data.get('phone')
+        public_serial_number = put_data.get('public_serial_number')
+        location = put_data.get('location')
 
-    email = put_data.get('email')
-    phone = put_data.get('phone')
-    public_serial_number = put_data.get('public_serial_number')
-    location = put_data.get('location')
+        user = User.query.get(user_id)
 
-    user = User.query.get(user_id)
+        if not user:
+            response_object = {
+                'message': 'User not found'
+            }
+            return make_response(jsonify(response_object)), 400
 
-    if not user:
+        if first_name and not first_name == user.first_name:
+            user.first_name = first_name
+
+        if last_name and not last_name == user.last_name:
+            user.last_name = last_name
+
+        if email and not email == user.email:
+            user.email = email
+
+        if phone and not phone == user.phone:
+            user.phone = phone
+
+        if public_serial_number and not public_serial_number == user.public_serial_number:
+            user.public_serial_number = public_serial_number
+
+        if location and not location == user.location:
+            user.location = location
+
+        db.session.commit()
+
         response_object = {
-            'message': 'User not found'
+            'status': 'success',
+            'message': 'Successfully Edited User.',
+            'data': {
+                'user': user_schema.dump(user).data
+            }
         }
-        return make_response(jsonify(response_object)), 400
 
-    if first_name and not first_name == user.first_name:
-        user.first_name = first_name
-
-    if last_name and not last_name == user.last_name:
-        user.last_name = last_name
-
-    if email and not email == user.email:
-        user.email = email
-
-    if phone and not phone == user.phone:
-        user.phone = phone
-
-    if public_serial_number and not public_serial_number == user.public_serial_number:
-        user.public_serial_number = public_serial_number
-
-    if location and not location == user.location:
-        user.location = location
-
-    db.session.commit()
-
-    response_object = {
-        'status': 'success',
-        'message': 'Successfully Edited User.',
-        'data': {
-            'user': user_schema.dump(user).data
-        }
-    }
-
-    return make_response(jsonify(response_object)), 201
+        return make_response(jsonify(response_object)), 201
 
 
 # add Rules for API Endpoints
