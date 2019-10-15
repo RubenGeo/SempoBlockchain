@@ -99,7 +99,7 @@ def find_user_from_public_identifier(*public_identifiers):
 
 def update_transfer_account_user(user,
                                  first_name=None, last_name=None, preferred_language=None,
-                                 bio=None, gender=None,
+                                 enrolled_by=None, referred_by=None,
                                  phone=None, email=None, public_serial_number=None,
                                  location=None,
                                  use_precreated_pin=False,
@@ -114,9 +114,9 @@ def update_transfer_account_user(user,
     if preferred_language:
         user.preferred_language = preferred_language
     if preferred_language:
-        user.bio = bio
+        user.enrolled_by = enrolled_by
     if preferred_language:
-        user.gender = gender
+        user.referred_by = referred_by
     if phone:
         user.phone = phone
     if email:
@@ -150,7 +150,7 @@ def update_transfer_account_user(user,
 
 
 def create_transfer_account_user(first_name=None, last_name=None, preferred_language=None,
-                                 bio=None, gender=None,
+                                 enrolled_by=None, referred_by=None,
                                  phone=None, email=None, public_serial_number=None,
                                  organisation=None,
                                  token=None,
@@ -167,7 +167,7 @@ def create_transfer_account_user(first_name=None, last_name=None, preferred_lang
     user = User(first_name=first_name,
                 last_name=last_name,
                 preferred_language=preferred_language,
-                bio=bio, gender=gender,
+                enrolled_by=enrolled_by, referred_by=referred_by,
                 phone=phone,
                 email=email,
                 public_serial_number=public_serial_number,
@@ -395,8 +395,8 @@ def proccess_create_or_modify_user_request(attribute_dict,
     last_name = attribute_dict.get('last_name')
     preferred_language = attribute_dict.get(
         'preferred_language')
-    bio = attribute_dict.get('bio')
-    gender = attribute_dict.get('gender')
+    enrolled_by = attribute_dict.get('enrolled_by')
+    referred_by = attribute_dict.get('referred_by')
 
     primary_user_identifier = attribute_dict.get('primary_user_identifier')
     primary_user_pin = attribute_dict.get('primary_user_pin')
@@ -493,7 +493,7 @@ def proccess_create_or_modify_user_request(attribute_dict,
         user = update_transfer_account_user(
             existing_user,
             first_name=first_name, last_name=last_name, preferred_language=preferred_language,
-            bio=bio, gender=gender,
+            enrolled_by=enrolled_by, referred_by=referred_by,
             phone=phone, email=email, public_serial_number=public_serial_number,
             use_precreated_pin=use_precreated_pin,
             existing_transfer_account=existing_transfer_account,
@@ -515,7 +515,7 @@ def proccess_create_or_modify_user_request(attribute_dict,
 
     user = create_transfer_account_user(
         first_name=first_name, last_name=last_name, preferred_language=preferred_language,
-        bio=bio, gender=gender,
+        enrolled_by=enrolled_by, referred_by=referred_by,
         phone=phone, email=email, public_serial_number=public_serial_number,
         organisation=organisation,
         blockchain_address=blockchain_address,

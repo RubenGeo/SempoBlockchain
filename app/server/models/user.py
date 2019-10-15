@@ -45,8 +45,8 @@ class User(ManyOrgBase, ModelBase):
     last_name = db.Column(db.String())
     preferred_language = db.Column(db.String())
 
-    bio = db.Column(db.String())
-    gender = db.Column(db.String())
+    enrolled_by = db.Column(db.String())
+    referred_by = db.Column(db.String())
 
     _last_seen = db.Column(db.DateTime)
 

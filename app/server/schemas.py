@@ -13,8 +13,8 @@ class UserSchema(Schema):
     last_name               = fields.Str()
     preferred_language      = fields.Str()
 
-    bio                     = fields.Str()
-    gender                  = fields.Str()
+    enrolled_by             = fields.Str()
+    referred_by             = fields.Str()
 
     email                   = fields.Str()
     phone                   = fields.Str()
