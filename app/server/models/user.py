@@ -43,7 +43,7 @@ class User(ManyOrgBase, ModelBase):
 
     first_name = db.Column(db.String())
     last_name = db.Column(db.String())
-    preferred_language = db.Column(db.String(), default='en_au')
+    preferred_language = db.Column(db.String())
 
     bio = db.Column(db.String())
     gender = db.Column(db.String())

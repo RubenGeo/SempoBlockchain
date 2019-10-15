@@ -293,7 +293,6 @@ def set_attachments(attribute_dict, user, custom_attributes):
         submitted_filename = attachment['filename'].split('/')[-1]
         for attribute in custom_attributes:
             if submitted_filename == attribute.value:
-                print('hier')
                 type = 'custom_attribute_{}'.format(attribute)
 
                 new_filename = generate_new_filename(
