@@ -71,6 +71,8 @@ class User(ManyOrgBase, ModelBase):
     is_phone_verified = db.Column(db.Boolean, default=False)
     is_self_sign_up = db.Column(db.Boolean, default=True)
 
+    password_reset_tokens = db.Column(JSONB, default=[])
+
     terms_accepted = db.Column(db.Boolean, default=True)
 
     matched_profile_pictures = db.Column(JSON)
@@ -407,6 +409,30 @@ class User(ManyOrgBase, ModelBase):
         except Exception as e:
 
             return {'success': False, 'message': e}
+
+    def save_password_reset_token(self, password_reset_token):
+        # make a "clone" of the existing token list
+        self.clear_expired_tokens()
+        current_reset_tokens = self.password_reset_tokens[:]
+        current_reset_tokens.append(password_reset_token)
+        # set db value
+        self.password_reset_tokens = current_reset_tokens
+
+    def check_reset_token_already_used(self, password_reset_token):
+        self.clear_expired_tokens()
+        is_valid = password_reset_token in self.password_reset_tokens
+        return is_valid
+
+    def delete_password_reset_tokens(self):
+        self.password_reset_tokens = []
+
+    def clear_expired_tokens(self):
+        valid_tokens = []
+        for token in self.password_reset_tokens:
+            validity_check = self.decode_single_use_JWS(token, 'R')
+            if validity_check['success']:
+                valid_tokens.append(token)
+        self.password_reset_tokens = valid_tokens
 
     def create_admin_auth(self, email, password, tier='view'):
         self.email = email
