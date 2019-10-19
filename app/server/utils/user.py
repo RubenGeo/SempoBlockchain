@@ -386,6 +386,9 @@ def proccess_create_or_modify_user_request(attribute_dict,
     transfer_account_name = attribute_dict.get('transfer_account_name')
     first_name = attribute_dict.get('first_name')
     last_name = attribute_dict.get('last_name')
+    business_usage_id = attribute_dict.get(
+        'business_usage_id')
+
     preferred_language = attribute_dict.get(
         'preferred_language')
 
