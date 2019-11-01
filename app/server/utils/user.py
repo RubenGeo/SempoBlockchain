@@ -157,7 +157,8 @@ def create_transfer_account_user(first_name=None, last_name=None, preferred_lang
                                  existing_transfer_account=None,
                                  is_beneficiary=False,
                                  is_vendor=False,
-                                 is_self_sign_up=False):
+                                 is_self_sign_up=False,
+                                 business_usage_id=None):
 
     user = User(first_name=first_name,
                 last_name=last_name,
@@ -165,7 +166,8 @@ def create_transfer_account_user(first_name=None, last_name=None, preferred_lang
                 phone=phone,
                 email=email,
                 public_serial_number=public_serial_number,
-                is_self_sign_up=is_self_sign_up)
+                is_self_sign_up=is_self_sign_up,
+                business_usage_id=business_usage_id)
 
     precreated_pin = None
     is_activated = False
@@ -386,11 +388,9 @@ def proccess_create_or_modify_user_request(attribute_dict,
     transfer_account_name = attribute_dict.get('transfer_account_name')
     first_name = attribute_dict.get('first_name')
     last_name = attribute_dict.get('last_name')
-    business_usage_id = attribute_dict.get(
-        'business_usage_id')
+    business_usage_id = attribute_dict.get('business_usage_id')
 
-    preferred_language = attribute_dict.get(
-        'preferred_language')
+    preferred_language = attribute_dict.get('preferred_language')
 
     primary_user_identifier = attribute_dict.get('primary_user_identifier')
     primary_user_pin = attribute_dict.get('primary_user_pin')
@@ -516,8 +516,8 @@ def proccess_create_or_modify_user_request(attribute_dict,
         use_precreated_pin=use_precreated_pin,
         use_last_4_digits_of_id_as_initial_pin=use_last_4_digits_of_id_as_initial_pin,
         existing_transfer_account=existing_transfer_account,
-        is_beneficiary=is_beneficiary, is_vendor=is_vendor, is_self_sign_up=is_self_sign_up
-    )
+        is_beneficiary=is_beneficiary, is_vendor=is_vendor, is_self_sign_up=is_self_sign_up,
+        business_usage_id=business_usage_id)
 
     custom_attributes = set_custom_attributes(
         attribute_dict, user)
